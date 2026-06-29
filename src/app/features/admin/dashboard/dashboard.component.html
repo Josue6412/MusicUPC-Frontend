@@ -1,0 +1,30 @@
+<div class="mu-page">
+  <div class="mu-page-head">
+    <mat-icon class="head-icon">dashboard</mat-icon>
+    <h1 class="mu-title">Panel de control</h1>
+  </div>
+
+  @if (loading()) {
+    <mat-progress-bar mode="indeterminate" />
+  } @else {
+    <div class="cards">
+      @for (c of cards(); track c.label) {
+        <div class="stat mu-card" [class]="c.tone">
+          <div class="icon"><mat-icon>{{ c.icon }}</mat-icon></div>
+          <div class="body">
+            <div class="value">{{ c.value }}</div>
+            <div class="label">{{ c.label }}</div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="revenue mu-card">
+      <div>
+        <div class="label">Ingresos acumulados (pagos)</div>
+        <div class="amount">{{ montoTotal() | currency: 'PEN' : 'symbol-narrow' : '1.2-2' }}</div>
+      </div>
+      <mat-icon>trending_up</mat-icon>
+    </div>
+  }
+</div>

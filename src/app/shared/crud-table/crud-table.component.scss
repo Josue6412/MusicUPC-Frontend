@@ -1,0 +1,80 @@
+.head-icon {
+  color: var(--mu-gold);
+  font-size: 30px;
+  width: 30px;
+  height: 30px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  margin-bottom: 14px;
+
+  mat-icon {
+    color: var(--mu-text-dim);
+  }
+
+  .filter {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--mu-text);
+    font-size: 14px;
+    width: 240px;
+    font-family: inherit;
+  }
+}
+
+.mu-table-wrap {
+  overflow: hidden;
+}
+
+table.mu-table {
+  background: transparent;
+}
+
+.actions-col {
+  width: 110px;
+  text-align: right;
+}
+
+.bool {
+  color: var(--mu-red);
+  &.yes {
+    color: #4caf50;
+  }
+}
+
+.empty {
+  text-align: center;
+  padding: 28px;
+  color: var(--mu-text-dim);
+}
+
+.table-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--mu-border);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.rating-stars {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.rating-stars mat-icon {
+  color: rgba(255,255,255,.18);
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.rating-stars mat-icon.filled {
+  color: var(--mu-gold);
+}

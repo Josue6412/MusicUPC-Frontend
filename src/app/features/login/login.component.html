@@ -1,0 +1,72 @@
+<div class="login-shell">
+  <div class="brand">
+    <div class="logo">♪</div>
+    <h1 class="mu-title">MusicUPC</h1>
+    <p>Reserva de artistas folklóricos peruanos</p>
+  </div>
+
+  <mat-card class="login-card mu-card">
+    @if (loading()) {
+      <mat-progress-bar mode="indeterminate" />
+    }
+    <mat-card-content>
+      <h2 class="mu-title">Iniciar sesión</h2>
+
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <mat-form-field appearance="outline" class="full">
+          <mat-label>Usuario</mat-label>
+          <input matInput formControlName="username" autocomplete="username" />
+          <mat-icon matPrefix>person</mat-icon>
+          @if (form.get('username')?.touched && form.get('username')?.invalid) {
+            <mat-error>Ingresa tu usuario</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full">
+          <mat-label>Contraseña</mat-label>
+          <input
+            matInput
+            [type]="hidePassword() ? 'password' : 'text'"
+            formControlName="password"
+            autocomplete="current-password"
+          />
+          <mat-icon matPrefix>lock</mat-icon>
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="hidePassword.set(!hidePassword())"
+          >
+            <mat-icon>{{ hidePassword() ? 'visibility' : 'visibility_off' }}</mat-icon>
+          </button>
+          @if (form.get('password')?.touched && form.get('password')?.invalid) {
+            <mat-error>Ingresa tu contraseña</mat-error>
+          }
+        </mat-form-field>
+
+        @if (errorMsg()) {
+          <div class="error-box">
+            <mat-icon>error_outline</mat-icon>
+            <span>{{ errorMsg() }}</span>
+          </div>
+        }
+
+        <button
+          mat-flat-button
+          color="primary"
+          class="full submit"
+          type="submit"
+          [disabled]="loading()"
+        >
+          Entrar
+        </button>
+      </form>
+
+      <div class="links">
+        <a routerLink="/recuperar">¿Olvidaste tu contraseña?</a>
+        <span class="sep">·</span>
+        <a routerLink="/registro">Crear cuenta</a>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

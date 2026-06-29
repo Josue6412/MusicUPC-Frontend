@@ -1,0 +1,127 @@
+
+// Include theming for Angular Material with `mat.theme()`.
+// This Sass mixin will define CSS variables that are used for styling Angular Material
+// components according to the Material 3 design spec.
+// Learn more about theming and how to use it for your application's
+// custom components at https://material.angular.dev/guide/theming
+@use '@angular/material' as mat;
+
+html {
+  @include mat.theme((
+    color: (
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
+body {
+  // Default the application to a light color theme. This can be changed to
+  // `dark` to enable the dark color theme, or to `light dark` to defer to the
+  // user's system settings.
+  color-scheme: light;
+
+  // Set a default background, font and text colors for the application using
+  // Angular Material's system-level CSS variables. Learn more about these
+  // variables at https://material.angular.dev/guide/system-variables
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+
+  // Reset the user agent margin.
+  margin: 0;
+}
+// ============================================================================
+// MusicUPC — Tema oscuro custom (Material 3)
+// Paleta: fondo #0f0f14 · primario dorado #e8a045 · acento rojo andino #c0392b
+// Títulos: Playfair Display · Cuerpo: Inter
+// ============================================================================
+
+html {
+  // M3 base. Usamos paletas cercanas y luego sobrescribimos las variables de
+  // sistema con los hex exactos de la marca (ver overrides más abajo).
+  @include mat.theme((
+    color: (
+      primary: mat.$orange-palette,
+      tertiary: mat.$red-palette,
+    ),
+    typography: (
+      plain-family: 'Inter, "Helvetica Neue", sans-serif',
+      brand-family: '"Playfair Display", Georgia, serif',
+      bold-weight: 700,
+      medium-weight: 500,
+      regular-weight: 400,
+    ),
+    density: 0,
+  ));
+  color-scheme: dark;
+}
+
+:root {
+  // --- Tokens de marca ---
+  --mu-bg:        #0f0f14;
+  --mu-surface:   #17171f;
+  --mu-surface-2: #1f1f2b;
+  --mu-border:    #2c2c3a;
+  --mu-gold:      #e8a045;
+  --mu-gold-700:  #c9863a;
+  --mu-red:       #c0392b;
+  --mu-text:      #ece9f1;
+  --mu-text-dim:  #9b96a8;
+
+  // --- Override de variables de sistema de Material ---
+  --mat-sys-primary: var(--mu-gold);
+  --mat-sys-on-primary: #1a1206;
+  --mat-sys-tertiary: var(--mu-red);
+  --mat-sys-on-tertiary: #ffffff;
+  --mat-sys-surface: var(--mu-surface);
+  --mat-sys-surface-container: var(--mu-surface-2);
+  --mat-sys-surface-container-high: var(--mu-surface-2);
+  --mat-sys-surface-container-highest: var(--mu-surface-2);
+  --mat-sys-background: var(--mu-bg);
+  --mat-sys-on-surface: var(--mu-text);
+  --mat-sys-on-surface-variant: var(--mu-text-dim);
+  --mat-sys-outline: var(--mu-border);
+  --mat-sys-outline-variant: var(--mu-border);
+}
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  background-color: var(--mu-bg);
+  color: var(--mu-text);
+  font-family: 'Inter', "Helvetica Neue", sans-serif;
+  font-size: 14px;
+}
+
+h1, h2, h3, .mu-title {
+  font-family: '"Playfair Display"', Georgia, serif;
+  letter-spacing: .3px;
+}
+
+// Utilidades comunes
+.mu-spacer { flex: 1 1 auto; }
+.mu-page { padding: 24px; }
+.mu-page-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  h1 { margin: 0; font-size: 26px; }
+}
+.mu-card {
+  background: var(--mu-surface);
+  border: 1px solid var(--mu-border);
+  border-radius: 14px;
+}
+.mu-table-wrap { overflow: auto; border-radius: 12px; }
+table.mu-table { width: 100%; }
+
+// Snackbar de error
+.mu-snack-error { --mat-snack-bar-button-color: #fff; }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
