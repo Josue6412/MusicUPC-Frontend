@@ -2,6 +2,14 @@
   <div class="mu-page-head">
     <mat-icon class="head-icon">dashboard</mat-icon>
     <h1 class="mu-title">Panel de control</h1>
+    <span class="mu-spacer"></span>
+
+    <mat-button-toggle-group [value]="periodo()" (change)="cambiarPeriodo($event.value)" class="period-filter">
+      <mat-button-toggle value="hoy">Hoy</mat-button-toggle>
+      <mat-button-toggle value="mes">Este mes</mat-button-toggle>
+      <mat-button-toggle value="anio">Este año</mat-button-toggle>
+      <mat-button-toggle value="todo">Todo</mat-button-toggle>
+    </mat-button-toggle-group>
   </div>
 
   @if (loading()) {
@@ -19,12 +27,130 @@
       }
     </div>
 
-    <div class="revenue mu-card">
-      <div>
-        <div class="label">Ingresos acumulados (pagos)</div>
-        <div class="amount">{{ montoTotal() | currency: 'PEN' : 'symbol-narrow' : '1.2-2' }}</div>
+    <div class="cards revenue-cards">
+
+      <div class="mu-card revenue">
+        <div>
+          <div class="label">
+            Ingresos por reservas
+          </div>
+
+          <div class="amount">
+            S/ {{ ingresosReservas() | number:'1.2-2' }}
+          </div>
+        </div>
+
+        <mat-icon>event</mat-icon>
       </div>
-      <mat-icon>trending_up</mat-icon>
+
+      <div class="mu-card revenue">
+        <div>
+          <div class="label">
+            Ingresos por suscripciones
+          </div>
+
+          <div class="amount">
+            S/ {{ ingresosSuscripciones() | number:'1.2-2' }}
+          </div>
+        </div>
+
+        <mat-icon>card_membership</mat-icon>
+      </div>
+
+      <div class="mu-card revenue total">
+        <div>
+          <div class="label">
+            Ingresos totales
+          </div>
+
+          <div class="amount">
+            S/ {{ ingresosTotales() | number:'1.2-2' }}
+          </div>
+        </div>
+
+        <mat-icon>trending_up</mat-icon>
+      </div>
+
+    </div>
+    
+    <div class="charts-grid">
+      <div class="chart-card mu-card">
+        <h3>Estado de reservas</h3>
+
+        <div class="pie-panel">
+          <div class="pie-wrapper">
+            <canvas
+              baseChart
+              [data]="pieChartData"
+              [options]="pieChartOptions"
+              [type]="pieChartType">
+            </canvas>
+          </div>
+
+          <div class="chart-summary">
+            <div class="summary-item ok">
+              <span></span>
+              <div>
+                <strong>Pagadas</strong>
+                <small class="summary-value">{{ cards()[2].value }}</small>
+              </div>
+            </div>
+
+            <div class="summary-item danger">
+              <span></span>
+              <div>
+                <strong>Pendientes</strong>
+                <small class="summary-value">{{ cards()[3].value }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mu-card chart-card">
+        <h3>Ingresos por categoría</h3>
+
+        <div class="bar-wrapper">
+          <canvas
+            baseChart
+            [data]="barChartData"
+            [type]="barChartType"
+            [options]="barChartOptions">
+          </canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="mu-card latest-card">
+      <h3>Últimas reservas</h3>
+
+      @if (ultimasReservas().length === 0) {
+        <p class="empty-text">No hay reservas registradas.</p>
+      } @else {
+        <div class="latest-list">
+          @for (r of ultimasReservas(); track r.id) {
+            <div class="latest-row">
+              <div>
+                <strong>{{ r.cliente }}</strong>
+                <span>Reserva #{{ r.id }}</span>
+              </div>
+
+              <div>
+                <strong>{{ r.fechaEvento | date:'dd/MM/yyyy' }}</strong>
+                <span>{{ r.horaEvento }}</span>
+              </div>
+
+              <span class="status" [class.ok]="r.estado === 'PAGADO'">
+                {{ r.estado }}
+              </span>
+
+              <strong class="price">
+                S/ {{ r.precioTotal | number:'1.2-2' }}
+              </strong>
+            </div>
+          }
+        </div>
+      }
     </div>
   }
 </div>

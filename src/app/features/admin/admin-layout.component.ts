@@ -76,7 +76,7 @@ export class AdminLayoutComponent {
 
   usarImagenPorDefecto(event: Event): void {
     const img = event.target as HTMLImageElement;
-    img.src = 'assets/default-user.png';
+    this.fotoPerfil.set('');
   }
 
   toggle(): void {

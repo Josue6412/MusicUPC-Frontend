@@ -71,7 +71,7 @@ export class UsuarioLayoutComponent implements OnDestroy{
 
   usarImagenPorDefecto(event: Event): void {
     const img = event.target as HTMLImageElement;
-    img.src = 'assets/default-user.png';
+    this.fotoPerfil.set('');
   }
 
   cambiarIdioma(lang: string): void {

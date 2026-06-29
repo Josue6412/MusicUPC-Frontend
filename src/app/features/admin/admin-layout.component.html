@@ -35,12 +35,13 @@
       </button>
 
      <button mat-button [matMenuTriggerFor]="userMenu" class="user-btn">
-        <img
-          class="avatar-header"
-          [src]="fotoPerfil() || 'assets/default-user.png'"
-          alt="Foto de perfil"
-          (error)="usarImagenPorDefecto($event)"
-        />
+        @if (fotoPerfil()) {
+          <img class="avatar-header" [src]="fotoPerfil()" alt="Foto de perfil" (error)="fotoPerfil.set('')" />
+        } @else {
+          <span class="avatar-header avatar-placeholder">
+            <mat-icon>person</mat-icon>
+          </span>
+        }
 
         <span class="uname">{{ username() ?? 'Administrador' }}</span>
 

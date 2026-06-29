@@ -50,6 +50,11 @@ export const USUARIO_ROUTES: Routes = [
         import('./resenas/resenas')
         .then(m => m.ResenasComponent)
       },
+      {
+        path: 'suscripcion',
+        loadComponent: () =>
+          import('./suscripcion/suscripcion').then((m) => m.SuscripcionUsuarioComponent),
+      },
     ],
   },
 ];

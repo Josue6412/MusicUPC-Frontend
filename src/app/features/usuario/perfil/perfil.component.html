@@ -23,11 +23,23 @@
     (drop)="dropFoto($event)"
     [class.dragging]="arrastrando()"
   >
-    <img
-      class="foto"
-      [src]="form.get('fotoPerfil')?.value || 'assets/default-user.png'"
-      alt="Foto de perfil"
-    />
+  @if (form.get('fotoPerfil')?.value) {
+  <img
+    class="foto"
+    [src]="form.get('fotoPerfil')?.value"
+    alt="Foto de perfil"
+  />
+} @else {
+  <span class="foto foto-placeholder">
+    <mat-icon>person</mat-icon>
+  </span>
+}
+
+<input
+  type="file"
+  accept="image/*"
+  (change)="seleccionarFoto($event)"
+/>
 
     <p>Arrastra una imagen aquí</p>
 
