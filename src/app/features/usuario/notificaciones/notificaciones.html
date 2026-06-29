@@ -1,0 +1,58 @@
+<div class="mu-page">
+  <div class="mu-page-head">
+    <mat-icon class="head-icon">notifications</mat-icon>
+    <h1 class="mu-title">Mis notificaciones</h1>
+
+    <span class="mu-spacer"></span>
+
+    <button mat-stroked-button (click)="load()">
+      <mat-icon>refresh</mat-icon>
+      Actualizar
+    </button>
+  </div>
+
+  @if (loading()) {
+    <mat-progress-bar mode="indeterminate" />
+  } @else if (error()) {
+    <div class="empty mu-card">
+      <mat-icon>error_outline</mat-icon>
+      <p>No se pudieron cargar tus notificaciones.</p>
+    </div>
+  } @else if (items().length === 0) {
+    <div class="empty mu-card">
+      <mat-icon>notifications_off</mat-icon>
+      <p>Todavía no tienes notificaciones.</p>
+    </div>
+  } @else {
+    <div class="grid">
+      @for (n of items(); track n.id) {
+        <article class="notificacion mu-card">
+          <header>
+            <div>
+              <h3 class="mu-title">{{ n.titulo }}</h3>
+              <span class="tipo">{{ n.tipo }}</span>
+            </div>
+
+            @if (n.leido) {
+              <span class="badge ok">Leído</span>
+            } @else {
+              <button mat-stroked-button color="primary" (click)="marcarComoLeida(n.id)">
+                <mat-icon>done</mat-icon>
+                Marcar leída
+              </button>
+            }
+          </header>
+
+          <p class="mensaje">{{ n.mensaje }}</p>
+
+          <footer>
+            <span>
+              <mat-icon>calendar_today</mat-icon>
+              {{ n.fecha_creacion | date: 'dd/MM/yyyy' }}
+            </span>
+          </footer>
+        </article>
+      }
+    </div>
+  }
+</div>

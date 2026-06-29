@@ -1,0 +1,139 @@
+<div class="mu-page">
+  <div class="mu-page-head">
+    <mat-icon class="head-icon">person</mat-icon>
+    <h1 class="mu-title">Mi perfil</h1>
+  </div>
+
+  @if (loading()) {
+    <mat-progress-bar mode="indeterminate" />
+  } @else if (notFound()) {
+    <div class="empty mu-card">
+      <mat-icon>error_outline</mat-icon>
+      <p>No se pudo cargar tu perfil.</p>
+    </div>
+  } @else {
+    <div class="perfil-layout">
+
+    <div class="mu-card foto-card" [formGroup]="form">
+
+  <div
+    class="drop-zone"
+    (dragover)="dragOver($event)"
+    (dragleave)="dragLeave($event)"
+    (drop)="dropFoto($event)"
+    [class.dragging]="arrastrando()"
+  >
+    <img
+      class="foto"
+      [src]="form.get('fotoPerfil')?.value || 'assets/default-user.png'"
+      alt="Foto de perfil"
+    />
+
+    <p>Arrastra una imagen aquí</p>
+
+    <small>o</small>
+
+    <input
+      #fileInput
+      hidden
+      type="file"
+      accept="image/*"
+      (change)="seleccionarFoto($event)"
+    />
+
+    <button
+      mat-stroked-button
+      type="button"
+      (click)="fileInput.click()"
+    >
+      Seleccionar archivo
+    </button>
+  </div>
+
+  @if (uploadingPhoto()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  }
+  <mat-form-field appearance="outline" class="full">
+    <mat-label>Foto de perfil (URL)</mat-label>
+    <input matInput formControlName="fotoPerfil" />
+  </mat-form-field>
+
+</div>
+    <form [formGroup]="form" (ngSubmit)="save()" class="mu-card form">
+      <div class="grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="nombre" />
+          @if (form.get('nombre')?.hasError('required')) {
+            <mat-error>Requerido</mat-error>
+          }
+          @if (form.get('nombre')?.hasError('pattern')) {
+            <mat-error>Solo se permiten letras</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Apellido</mat-label>
+          <input matInput formControlName="apellido" />
+          @if (form.get('apellido')?.hasError('required')) {
+            <mat-error>Requerido</mat-error>
+          }
+          @if (form.get('apellido')?.hasError('pattern')) {
+            <mat-error>Solo se permiten letras</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" />
+          <mat-error>Email inválido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Teléfono</mat-label>
+          <input matInput formControlName="telefono" maxlength="9" />
+          @if (form.get('telefono')?.hasError('required')) {
+            <mat-error>Requerido</mat-error>
+          }
+          @if (form.get('telefono')?.hasError('pattern')) {
+            <mat-error>Debe tener 9 números</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>DNI</mat-label>
+          <input matInput formControlName="dni" maxlength="8" />
+          @if (form.get('dni')?.hasError('required')) {
+            <mat-error>Requerido</mat-error>
+          }
+          @if (form.get('dni')?.hasError('pattern')) {
+            <mat-error>Debe tener 8 números</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Fecha de nacimiento</mat-label>
+          <input
+            matInput
+            [matDatepicker]="fechaNacimientoPicker"
+            formControlName="fechaNacimiento"
+          />
+          <mat-datepicker-toggle matIconSuffix [for]="fechaNacimientoPicker"></mat-datepicker-toggle>
+          <mat-datepicker #fechaNacimientoPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full">
+          <mat-label>Nueva contraseña</mat-label>
+          <input matInput type="password" formControlName="contrasena" />
+          <mat-hint>Déjala en blanco para mantener la actual.</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div class="actions">
+        <button mat-flat-button color="primary" type="submit" [disabled]="saving() || uploadingPhoto()">
+          <mat-icon>save</mat-icon> Guardar cambios
+        </button>
+      </div>
+    </form>
+</div>
+}

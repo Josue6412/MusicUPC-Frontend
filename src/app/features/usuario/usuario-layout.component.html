@@ -1,0 +1,64 @@
+<header class="topbar">
+  <div class="brand">
+    <span class="mark">♪</span>
+    <span class="name mu-title">MusicUPC</span>
+  </div>
+
+  <nav>
+    <a routerLink="artistas" routerLinkActive="active">
+      <mat-icon>library_music</mat-icon><span>{{ 'MENU.ARTISTAS' | translate }}</span>
+    </a>
+    <a routerLink="reservas" routerLinkActive="active">
+      <mat-icon>event</mat-icon><span>{{ 'MENU.RESERVAS' | translate }}</span>
+    </a>
+
+    <a routerLink="notificaciones" routerLinkActive="active" class="notif-link">
+      <span class="notif-icon-wrap">
+        <mat-icon>notifications</mat-icon>
+
+        @if (notificacionesNoLeidas() > 0) {
+          <span class="notif-badge">
+            {{ notificacionesNoLeidas() }}
+          </span>
+        }
+      </span>
+
+      <span>{{ 'MENU.NOTIFICACIONES' | translate }}</span>
+    </a>
+
+    <a routerLink="resenas" routerLinkActive="active">
+      <mat-icon>reviews</mat-icon><span>{{ 'MENU.RESENAS' | translate }}</span>
+    </a>
+
+    <a routerLink="perfil" routerLinkActive="active">
+      <mat-icon>person</mat-icon><span>{{ 'MENU.PERFIL' | translate }}</span>
+    </a>
+  </nav>
+
+  <span class="mu-spacer"></span>
+
+  <button mat-stroked-button (click)="cambiarIdioma('es')">
+    🇪🇸 ES
+  </button>
+
+  <button mat-stroked-button (click)="cambiarIdioma('en')">
+    🇺🇸 EN
+  </button>
+
+  <span class="user">
+    <img
+      class="avatar-header"
+      [src]="fotoPerfil() || 'assets/default-user.png'"
+      alt="Foto de perfil"
+      (error)="usarImagenPorDefecto($event)"  />
+    {{ username() ?? 'Usuario' }}
+  </span>
+  <button mat-stroked-button (click)="logout()">
+    <mat-icon>logout</mat-icon>
+    {{ 'MENU.SALIR' | translate }}
+  </button>
+</header>
+
+<main class="content">
+  <router-outlet />
+</main>
