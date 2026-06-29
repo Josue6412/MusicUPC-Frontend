@@ -33,8 +33,13 @@
           <td mat-cell *matCellDef="let row">
             @switch (col.kind) {
               @case ('image') {
-                <img class="table-avatar" [src]="row[col.key] || 'assets/default-user.png'" alt="Foto de perfil"
-                />
+                @if (row[col.key]) {
+                  <img class="table-avatar" [src]="row[col.key]" alt="Foto de perfil" />
+                } @else {
+                  <span class="table-avatar avatar-placeholder">
+                    <mat-icon>person</mat-icon>
+                  </span>
+                }                
               }
               @case ('boolean') {
                 <mat-icon class="bool" [class.yes]="row[col.key]">

@@ -11,7 +11,9 @@
     <a routerLink="reservas" routerLinkActive="active">
       <mat-icon>event</mat-icon><span>{{ 'MENU.RESERVAS' | translate }}</span>
     </a>
-
+    <a routerLink="suscripcion" routerLinkActive="active">
+      <mat-icon>card_membership</mat-icon><span>Mi suscripción</span>
+    </a>
     <a routerLink="notificaciones" routerLinkActive="active" class="notif-link">
       <span class="notif-icon-wrap">
         <mat-icon>notifications</mat-icon>
@@ -46,11 +48,14 @@
   </button>
 
   <span class="user">
-    <img
-      class="avatar-header"
-      [src]="fotoPerfil() || 'assets/default-user.png'"
-      alt="Foto de perfil"
-      (error)="usarImagenPorDefecto($event)"  />
+    @if (fotoPerfil()) {
+      <img class="avatar-header" [src]="fotoPerfil()" alt="Foto de perfil" (error)="fotoPerfil.set('')"/>
+    } @else {
+      <span class="avatar-header avatar-placeholder">
+        <mat-icon>person</mat-icon>
+      </span>
+    }
+
     {{ username() ?? 'Usuario' }}
   </span>
   <button mat-stroked-button (click)="logout()">

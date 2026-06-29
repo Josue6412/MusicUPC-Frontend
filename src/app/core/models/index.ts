@@ -194,6 +194,27 @@ export interface SuscripcionInsert {
   estado: string;
 }
 
+export interface PagoSuscripcion {
+  id: number;
+  suscripcionId: number;
+  usuarioId: number;
+  monto: number;
+  tipoPlan: string;
+  metodo: string;
+  estado: string;
+  referenciaTransaccion: string;
+  fechaPago: string;
+  fechaCreacion: string;
+}
+
+export interface PagoSuscripcionInsert {
+  suscripcionId: number;
+  monto: number;
+  tipoPlan: string;
+  metodo: string;
+  referenciaTransaccion: string;
+}
+
 // --- Termino ---
 export interface Termino {
   id: number;
@@ -209,4 +230,30 @@ export interface TerminoInsert {
   status: string;
   fecha_confirmacion: string;
   fecha_creacion: string;
+}
+
+// --- Dashboard ---
+export interface Dashboard {
+  totalUsuarios: number;
+  totalArtistas: number;
+  reservasTotales: number;
+  reservasPagadas: number;
+  reservasPendientes: number;
+  pagosReservas: number;
+  pagosSuscripciones: number;
+  suscripcionesPagadas: number;
+  suscripcionesPendientes: number;
+  ingresosReservas: number;
+  ingresosSuscripciones: number;
+  ingresosTotales: number;
+  ultimasReservas: DashboardReserva[];
+}
+
+export interface DashboardReserva {
+  id: number;
+  cliente: string;
+  fechaEvento: string;
+  horaEvento: string;
+  estado: string;
+  precioTotal: number;
 }

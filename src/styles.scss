@@ -125,3 +125,20 @@ table.mu-table { width: 100%; }
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.avatar-placeholder,
+.foto-placeholder {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(232, 160, 69, 0.15);
+  color: var(--mu-gold);
+  border: 1px solid var(--mu-gold);
+  border-radius: 50%;
+}
+
+.avatar-placeholder mat-icon,
+.foto-placeholder mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}

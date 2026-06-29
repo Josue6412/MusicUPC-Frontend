@@ -1,0 +1,308 @@
+<div class="mu-page">
+  <div class="mu-page-head">
+    <mat-icon class="head-icon">card_membership</mat-icon>
+    <h1 class="mu-title">Mi suscripción</h1>
+
+    <span class="mu-spacer"></span>
+
+    <button mat-stroked-button (click)="load()">
+      <mat-icon>refresh</mat-icon>
+      Actualizar
+    </button>
+  </div>
+
+  @if (loading()) {
+    <mat-progress-bar mode="indeterminate" />
+  } @else if (error()) {
+    <div class="empty mu-card">
+      <mat-icon>error_outline</mat-icon>
+      <p>No se pudo cargar tu suscripción.</p>
+    </div>
+  } @else {
+    <section class="mu-card current">
+      <div class="current-main">
+          <div>
+          <span class="label">Estado actual</span>
+
+          @if (actual()) {
+              <h2 class="mu-title">
+                Plan {{ formatearPlan(actual()?.tipo_plan) }}
+              </h2>
+
+              <p>
+              Vigencia:
+              {{ actual()?.fecha_inicio | date: 'dd/MM/yyyy' }}
+              -
+              {{ actual()?.fecha_fin | date: 'dd/MM/yyyy' }}
+              </p>
+              <p class="subscription-message" [class.warning]="suscripcionVencida() || diasRestantes() <= 3">
+                {{ mensajeSuscripcion() }}
+              </p>
+              @if (suscripcionVencida() && actual()) {
+                <button
+                  mat-flat-button
+                  color="primary"
+                  class="renew-main-btn"
+                  (click)="pagar({
+                    tipo: actual()?.tipo_plan!,
+                    precio: actual()?.precio!
+                  })"
+                >
+                  <mat-icon>autorenew</mat-icon>
+                  Renovar ahora
+                </button>
+              }
+          } @else {
+              <h2 class="mu-title">Sin suscripción</h2>
+              <p>Elige un plan para activar tu suscripción mensual.</p>
+          }
+          </div>
+
+          @if (actual()) {
+          <span class="badge" [class]="suscripcionVencida() ? 'pending' : estadoClass(actual()?.estado)">
+            {{ textoEstadoSuscripcion() }}
+          </span>
+          }
+      </div>
+
+      @if (actual()) {
+          <div class="subscription-info">
+          <div class="info-box">
+              <mat-icon>event_available</mat-icon>
+              <div>
+              <strong [class.expired-days]="suscripcionVencida()">
+                {{ diasRestantes() }}
+              </strong>
+              <span>días restantes</span>
+              </div>
+          </div>
+
+          <div class="info-box">
+              <mat-icon>payments</mat-icon>
+              <div>
+              <strong>S/ {{ actual()?.precio | number:'1.2-2' }}</strong>
+              <span>pago mensual</span>
+              </div>
+          </div>
+
+          <div class="info-box">
+              <mat-icon>update</mat-icon>
+              <div>
+              <strong>{{ actual()?.fecha_fin | date: 'dd/MM/yyyy' }}</strong>
+              <span>próximo vencimiento</span>
+              </div>
+          </div>
+          </div>
+
+          <div class="progress-wrap">
+          <div class="progress-label">
+              <span>Tiempo restante</span>
+          </div>
+
+          <div class="progress">
+              <div
+                class="progress-fill"
+                [class.warning]="estaPorVencer()"
+                [class.expired]="suscripcionVencida()"
+                [style.width.%]="porcentajeRestante()">
+              </div>
+          </div>
+          </div>
+      }
+    </section>
+
+    @if (actual()) {
+
+    <section class="beneficios mu-card" [class.beneficios-bloqueados]="suscripcionVencida()">
+
+    <h3>
+        <mat-icon>workspace_premium</mat-icon>
+        Beneficios incluidos
+    </h3>
+
+    <ul>
+
+        @if (actual()?.tipo_plan === 'BASICO') {
+
+        <li>
+          <mat-icon class="benefit-icon">
+            {{ suscripcionVencida() ? 'lock' : 'check_circle' }}
+          </mat-icon>
+          Reservas ilimitadas.
+        </li>
+
+        <li>
+          <mat-icon class="benefit-icon">
+            {{ suscripcionVencida() ? 'lock' : 'check_circle' }}
+          </mat-icon>
+          Perfil verificado.
+        </li>
+
+        <li>
+          <mat-icon class="benefit-icon">
+            {{ suscripcionVencida() ? 'lock' : 'check_circle' }}
+          </mat-icon>
+          Notificaciones prioritarias.
+        </li>
+
+        }
+
+        @if (actual()?.tipo_plan === 'PREMIUM') {
+
+          <li>
+          <mat-icon class="benefit-icon">
+            {{ suscripcionVencida() ? 'lock' : 'check_circle' }}
+          </mat-icon>
+          Todo lo del Plan Básico.
+          </li>
+
+          <li>
+            <mat-icon class="benefit-icon">
+              {{ suscripcionVencida() ? 'lock' : 'check_circle' }}
+            </mat-icon>
+            Soporte prioritario.
+          </li>
+
+          <li>
+            <mat-icon class="benefit-icon">
+              {{ suscripcionVencida() ? 'lock' : 'check_circle' }}
+            </mat-icon>
+            Promociones exclusivas.
+          </li>
+
+          <li>
+            <mat-icon class="benefit-icon">
+              {{ suscripcionVencida() ? 'lock' : 'check_circle' }}
+            </mat-icon>
+            Mayor visibilidad para tus reservas.
+          </li>
+
+        }
+
+        @if (actual()?.tipo_plan === 'PRO') {
+
+          <li>
+          <mat-icon class="benefit-icon">
+            {{ suscripcionVencida() ? 'lock' : 'check_circle' }}
+          </mat-icon>
+          Todos los beneficios Premium.
+          </li>
+
+          <li>
+            <mat-icon class="benefit-icon">
+              {{ suscripcionVencida() ? 'lock' : 'check_circle' }}
+            </mat-icon>
+            Atención VIP.
+          </li>
+
+          <li>
+            <mat-icon class="benefit-icon">
+              {{ suscripcionVencida() ? 'lock' : 'check_circle' }}
+            </mat-icon>
+            Descuentos exclusivos.
+          </li>
+
+          <li>
+            <mat-icon class="benefit-icon">
+              {{ suscripcionVencida() ? 'lock' : 'check_circle' }}
+            </mat-icon>
+            Acceso anticipado a nuevos artistas.
+          </li>
+
+          <li>
+            <mat-icon class="benefit-icon">
+              {{ suscripcionVencida() ? 'lock' : 'check_circle' }}
+            </mat-icon>
+            Máxima prioridad de soporte.
+          </li>
+
+        }
+
+    </ul>
+
+    </section>
+
+    }
+
+    <div class="plans">
+      @for (plan of planes; track plan.tipo) {
+        <article class="plan mu-card" [class.active-plan]="esPlanActual(plan.tipo)">
+          @if (esPlanActual(plan.tipo)) {
+            <span class="plan-badge">Plan actual</span>
+          }
+          <header>
+            <mat-icon>workspace_premium</mat-icon>
+            <h3 class="mu-title">{{ plan.nombre }}</h3>
+          </header>
+
+          <p>{{ plan.descripcion }}</p>
+
+          <div class="price">
+            S/ {{ plan.precio | number:'1.2-2' }}
+            <span>/ mes</span>
+          </div>
+
+          <button mat-flat-button color="primary" (click)="pagar(plan)" [disabled]="actual()?.tipo_plan === plan.tipo && estadoClass(actual()?.estado) === 'ok' && !suscripcionVencida()">
+            <mat-icon>payments</mat-icon>
+
+            @if (actual()?.tipo_plan === plan.tipo && estadoClass(actual()?.estado) === 'ok' && !suscripcionVencida()) {
+              Plan actual
+            } @else if (suscripcionVencida()) {
+              Renovar plan
+            } @else if (actual()) {
+              Cambiar / renovar
+            } @else {
+              Pagar plan
+            }
+          </button>
+        </article>
+      }
+    </div>
+    <section class="historial mu-card">
+  <h3>
+    <mat-icon>receipt_long</mat-icon>
+    Historial de pagos
+    </h3>
+
+    @if (historialPagos().length === 0) {
+        <p class="empty-text">Aún no tienes pagos de suscripción.</p>
+    } @else {
+        <div class="historial-list">
+        @for (pago of historialPagos(); track pago.id) {
+            <div class="historial-item">
+            <div class="historial-left">
+                <span class="estado-pago">
+                <mat-icon>check_circle</mat-icon>
+                {{ pago.estado }}
+                </span>
+
+                <strong>Plan {{ formatearPlan(pago.tipoPlan) }}</strong>
+                <span class="periodo-pago">Suscripción mensual</span>
+
+                <span class="metodo">
+                <mat-icon>{{ iconoMetodo(pago.metodo) }}</mat-icon>
+                Método: {{ formatearMetodo(pago.metodo) }}
+                </span>
+
+                @if (pago.referenciaTransaccion) {
+                <span class="referencia">
+                    <mat-icon>confirmation_number</mat-icon>
+                    Ref. {{ pago.referenciaTransaccion }}
+                </span>
+                }
+            </div>
+
+            <div class="historial-right">
+                <strong>S/ {{ pago.monto | number:'1.2-2' }}</strong>
+
+                <span>
+                {{ pago.fechaPago | date:'dd/MM/yyyy HH:mm' }}
+                </span>
+            </div>
+            </div>
+        }
+        </div>
+    }
+    </section>
+  }
+</div>
